@@ -43,7 +43,7 @@ Once the user responds, map their definitions into the following JSON schema and
     "cart_page_name": "USER_INPUT_CART_PAGE",
     "checkout_page_name": "USER_INPUT_CHECKOUT_PAGE"
   },
-  "event_mappings": {
+ "event_mappings": {
     "add_to_cart": {
       "source_type": "click_OR_custom",
       "identifier": "USER_INPUT_SELECTOR_OR_EVENT_NAME"
