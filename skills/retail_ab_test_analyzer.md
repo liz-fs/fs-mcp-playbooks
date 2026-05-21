@@ -8,17 +8,18 @@ Because the Fullstory MCP environment lacks programmatic funnel generation, you 
 ---
 
 ## 2. Initialization & State Management
-Upon receiving any A/B test analysis request, you **MUST** prioritize state verification before calling any Fullstory analytical tools.
+Upon receiving an A/B test analysis request, you **MUST** dynamically identify the active organization state.
 
-### Step 2.1: Read Metadata State
-Immediately call the filesystem tool `read_file_content` for path `config/org_metadata.json`. 
+### Step 2.1: Extract Contextual Org ID
+Retrieve the active `org_id` from the current FullStory MCP session context. 
 
-### Step 2.2: Evaluate State JSON
-Parse the retrieved JSON object. Look for the target `org_id` provided in the user prompt.
-* **CRITICAL PATH - Missing Org or Properties:** If the `org_id` is not present, or if any of the following keys are null/empty, you must **HALT** execution and pivot to **Conversational Gathering Mode** (Section 3).
-  * `industry` (Must be evaluated; this skill strictly targets "retail")
-  * `ab_test_event_name` (The custom event capturing variant assignment)
-  * `page_mappings` (`pdp_page_name`, `cart_page_name`, `checkout_page_name`)
+### Step 2.2: Read Client-Specific Metadata State
+Construct the target file path using the format: `config/[extracted_org_id]-metadata.json`. 
+Call the filesystem tool `read_file_content` for this specific path.
+
+### Step 2.3: Evaluate State JSON
+* **Scenario A (File Does Not Exist / Is Empty):** If the file cannot be found, pivot immediately to **Conversational Gathering Mode** (Section 3). Collect the details and create a brand new file named exactly `config/[extracted_org_id]-metadata.json`.
+* **Scenario B (File Exists):** Parse the JSON. If any crucial keys (`ab_test_event_name`, `page_mappings`) are missing or null, pause and ask the user to fill in the gaps before proceeding to the tool calls.
 
 ---
 
