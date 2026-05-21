@@ -57,19 +57,19 @@ Once the user responds, map their definitions into the following JSON schema and
 }
 ```
 
-4. A/B Test Variant Segmentation & Performance Metrics 
+##  4. A/B Test Variant Segmentation & Performance Metrics 
 
-Step 4.1: Understand Experiment Exposure Parameters 
+### Step 4.1: Understand Experiment Exposure Parameters 
 To isolate users exposed to specific test variations, you must identify the experiment criteria: 
 * **Treatment ID:** This is a property attached to the core FullStory Custom Event Name (defined in `ab_test_event_name`, such as *Experiment Viewed* or *Variant Assigned*). It represents the unique identifier for a specific test branch. 
 * **Fallback (Treatment Name):** If a structured Treatment ID is unavailable or null in the event payload, fallback to utilizing the text-based Treatment Name property to isolate variants. 
 
-Step 4.2: FullStory Segment Creation & Application 
+### Step 4.2: FullStory Segment Creation & Application 
 For each test variant (e.g., Control vs. Variant A), you must logically instruct or construct a FullStory Segment defined by a user session containing the specific exposure event filtered by its corresponding Treatment ID/Name. 
 
 > **Critical Execution Rule:** These individual variant segments must act as the primary global filters. Every single performance metric defined in Step 4.3 must be independently calculated for each variant segment to yield accurate A/B comparison data. 
 
-Step 4.3: Performance Metrics to Measure 
+### Step 4.3: Performance Metrics to Measure 
 For each isolated variant segment, calculate and output the following metrics: 
 * **Conversion Metrics:** 
   * **Page-Level Exit Rate:** The percentage of sessions that ended on the specific page where the variant was visible. 
